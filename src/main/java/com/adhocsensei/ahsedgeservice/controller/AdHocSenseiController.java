@@ -46,8 +46,8 @@ public class AdHocSenseiController {
         return service.loginUser(user);
     }
 
-    @PostMapping("/user")
-    public User addACourse(@RequestBody User user) {
+    @PostMapping("/register")
+    public User addAUser(@RequestBody User user) {
         System.out.println("calling in edge service, making a user(sensei)");
         return service.createUser(user);
     }
