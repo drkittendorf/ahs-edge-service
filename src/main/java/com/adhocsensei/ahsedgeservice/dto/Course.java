@@ -22,6 +22,7 @@ public class Course implements Serializable {
     private String longDescription;
     private Long senseiId;
 
+
 //    public Course() {
 //    }
 //

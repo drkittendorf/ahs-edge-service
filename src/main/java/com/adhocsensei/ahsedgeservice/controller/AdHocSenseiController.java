@@ -3,6 +3,7 @@ package com.adhocsensei.ahsedgeservice.controller;
 import com.adhocsensei.ahsedgeservice.dto.Course;
 import com.adhocsensei.ahsedgeservice.dto.User;
 import com.adhocsensei.ahsedgeservice.service.AdHocSenseiService;
+import com.adhocsensei.ahsedgeservice.viewmodel.StudentViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,21 +42,28 @@ public class AdHocSenseiController {
     }
 
     @GetMapping("/login")
-    public String loginUser(@RequestBody User user) {
+    public User loginUser(@RequestBody User user) throws Exception {
         System.out.println("calling the edge service, logging in user");
         return service.loginUser(user);
     }
 
     @PostMapping("/register")
     public User addAUser(@RequestBody User user) {
-        System.out.println("calling in edge service, making a user(sensei)");
+        System.out.println("calling in edge service, making a user");
         return service.createUser(user);
     }
 
-    @PostMapping("/course")
-    public Course addACourse(@RequestBody Course course) {
-        System.out.println("calling in edge to make a course");
-        return service.buildACourse(course);
+//    this should be used for sensei to add course, maybe route should be "create_course"
+    @PostMapping("/senseidash/{id}")
+    public Course addACourse(@PathVariable Long id, @RequestBody Course course) {
+        System.out.println("calling in edge for a sensei to make a course");
+        return service.buildACourse(id, course);
+    }
+
+    @PostMapping("/studentdash/{id}")
+    public User registerForACourse(@PathVariable Long id,@RequestBody Course course) {
+        System.out.println("calling in edge for a student to register for a course");
+        return service.addARegisteredCourse(id, course);
     }
 
     @GetMapping("/course")
