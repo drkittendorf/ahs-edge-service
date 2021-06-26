@@ -34,10 +34,6 @@ public class AdHocSenseiService {
         return userClient.getAllUsers();
     }
 
-//    public Optional<User> getUserByEmail(@RequestBody User user) {
-//        return Optional.ofNullable(userClient.getUserByEmail(user));
-//    }
-
     public User createUser(@RequestBody User user) {
 //        System.out.println("service layer creating a user");
         if (user.isInstructor()) {
@@ -92,7 +88,7 @@ public class AdHocSenseiService {
                                       @RequestParam(required = false) String location,
                                       @RequestParam(required = false) String date) {
         System.out.println("service layer, getting all courses");
-        return courseClient.getAllCourses(title,category,location,date);
+        return courseClient.getAllCourses(title, category, location, date);
     }
 
     public Optional<Course> getCourseById(@PathVariable Long id) {
@@ -102,7 +98,7 @@ public class AdHocSenseiService {
 
     public void updateCourse(@PathVariable Long id, @RequestBody Course course) {
         System.out.println("service layer, updating course by id");
-        courseClient.updateCourse(id,course);
+        courseClient.updateCourse(id, course);
     }
 
     public void deleteCourseById(@PathVariable Long id) {
@@ -112,15 +108,10 @@ public class AdHocSenseiService {
 
     public User addARegisteredCourse(@PathVariable Long id, @RequestBody Course courseToBeRegistered) {
         System.out.println("service layer, trying to register for a course");
-//
         User student = userClient.getUserById(id).get();
-        System.out.println("line 117, student from userClient based on path variable " + student);
-
         Optional<Course> registeredCourse = courseClient.getCourseById(courseToBeRegistered.getCourseId());
-        System.out.println("line 120, registeredCourse from courseClient base on request body " + registeredCourse);
 
-        userClient.addCourseToListOfStudentCourses(student.getUserId(),registeredCourse);
-        System.out.println("line 123, the current student is now " + student);
+        userClient.addCourseToListOfStudentCourses(student.getUserId(), registeredCourse);
 
         return student;
     }
@@ -129,7 +120,7 @@ public class AdHocSenseiService {
         User sensei = userClient.getUserById(id).get();
         courseToBeAdded.setSenseiId(sensei.getUserId());
         Course addedCourse = courseClient.createCourse(courseToBeAdded);
-        userClient.addCourseToListOfSenseisCourses(sensei.getUserId(),addedCourse);
+        userClient.addCourseToListOfSenseisCourses(sensei.getUserId(), addedCourse);
 
 //        if (courseToBeAdded.getSenseiId() != null) {
 //            List<User> senseis = userClient.getAllUsers();
@@ -147,82 +138,4 @@ public class AdHocSenseiService {
 //        }
         return addedCourse;
     }
-
-//    public SenseiViewModel buildACourseForSensei(@PathVariable Long id, @RequestBody Course courseToBeAdded, SenseiViewModel vm) {
-////       User sensei = new User();
-//       User sensei = userClient.getUserById(id).get();
-//       sensei.setFirstName(vm.getSenseiUser().getFirstName());
-//       sensei.setLastName(vm.getSenseiUser().getLastName());
-//       sensei.setEmail(vm.getSenseiUser().getEmail());
-//       sensei.setPassword(vm.getSenseiUser().getPassword());
-//       sensei.setBio(vm.getSenseiUser().getBio());
-//       sensei.setInstructor(vm.getSenseiUser().isInstructor());
-//       sensei.setAuthority(vm.getSenseiUser().getAuthority());
-//       userClient.createUser(sensei);
-//       vm.setSenseiId(sensei.getUserId());
-//
-//       List<Course> senseisCourses = vm.getSenseisCourses();
-//
-//       senseisCourses.stream()
-//               .forEach(c ->
-//               {
-//                   c.setSenseiId(vm.getSenseiId());
-//                   courseClient.createCourse(c);
-//               });
-//       senseisCourses = courseClient.getAllCourses(vm.getSenseiId());
-//
-//    }
-
-//    public User buildARegisteredCourse(StudentViewModel courseToBeRegistered) {
-//        System.out.println("service layer, trying to register for a course");
-//        if (courseToBeRegistered.getStudentId() != null) {
-//            List<User> students = userClient.getAllUsers();
-//            List<User> thisStudent = students
-//                    .stream()
-//                    .filter(s -> courseToBeRegistered.getStudentId() == s.getUserId())
-//                    .collect(Collectors.toList());
-//            if (thisStudent.size() == 0) {
-//                System.out.println("passed invalid user id " + courseToBeRegistered.getStudentId());
-//            }
-//        }
-//        return userClient.updateUser(courseToBeRegistered);
-//    }
 }
-
-
-//    Predicate<User> p1 = u -> u.getEmail() == userToLogin.getEmail();
-//
-//        boolean optionalUser = userClient.getAllUsers()
-//                .stream()
-//                .filter(u -> u.getEmail() == userToLogin.getEmail())
-//                .allMatch(p1);
-//        if (optionalUser) {
-//            userClient.
-//        }
-
-
-//        Predicate<User> p1 = u -> u.getEmail() == userToLogin.getEmail();
-//        Predicate<User> p2 = u -> u.getPassword() == userToLogin.getPassword();
-//
-//         boolean optionalUser = userClient.getAllUsers()
-//                .stream()
-//                .allMatch(user -> user.getEmail() == userToLogin.getEmail());
-//
-//        if (optionalUser) {
-//            userClient.getAllUsers().stream().allMatch(p1);
-//            if (userToLogin.getPassword().equals(p2)) {
-//                return userClient.getAllUsers()
-//                        .stream()
-//                        .filter(u -> u.getEmail() == userToLogin.getEmail())
-//                        .collect(Collectors.collectingAndThen())
-//        }
-
-//        Optional List<User> optionalUser = Optional.ofNullable(userClient.getAllUsers()
-//                .stream()
-//                .filter(user -> user.getEmail() == userToLogin.getEmail())
-//                .collect()
-
-//        Optional<User> optionalUser = Optional.ofNullable(userClient.getAllUsers()
-//                .stream()
-//                .anyMatch(userToLogin.getEmail() == userClient.getAllUsers().stream().filter(u -> u.getEmail()))
-//        );

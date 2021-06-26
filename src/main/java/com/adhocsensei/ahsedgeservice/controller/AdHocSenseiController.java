@@ -3,11 +3,9 @@ package com.adhocsensei.ahsedgeservice.controller;
 import com.adhocsensei.ahsedgeservice.dto.Course;
 import com.adhocsensei.ahsedgeservice.dto.User;
 import com.adhocsensei.ahsedgeservice.service.AdHocSenseiService;
-import com.adhocsensei.ahsedgeservice.viewmodel.StudentViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.Path;
 import java.util.List;
 import java.util.Optional;
 
