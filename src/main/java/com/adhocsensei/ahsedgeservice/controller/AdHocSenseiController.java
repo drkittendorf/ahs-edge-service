@@ -39,7 +39,7 @@ public class AdHocSenseiController {
         service.deleteUserById(id);
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public User loginUser(@RequestBody User user) throws Exception {
         System.out.println("calling the edge service, logging in user");
         return service.loginUser(user);
