@@ -2,7 +2,7 @@ package com.adhocsensei.ahsedgeservice.util.feign;
 
 import com.adhocsensei.ahsedgeservice.dto.Course;
 import com.adhocsensei.ahsedgeservice.dto.User;
-import com.adhocsensei.ahsedgeservice.viewmodel.SenseiViewModel;
+//import com.adhocsensei.ahsedgeservice.viewmodel.SenseiViewModel;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +38,4 @@ public interface UserClient {
 
     @GetMapping("/login")
     public User loginUser(@RequestBody User user);
-
-//    add routes to see registered courses associated with studentId
 }
