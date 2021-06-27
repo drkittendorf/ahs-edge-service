@@ -5,8 +5,6 @@ import com.adhocsensei.ahsedgeservice.dto.User;
 import com.adhocsensei.ahsedgeservice.exception.InvalidUserCredentialsException;
 import com.adhocsensei.ahsedgeservice.util.feign.CourseClient;
 import com.adhocsensei.ahsedgeservice.util.feign.UserClient;
-import com.adhocsensei.ahsedgeservice.viewmodel.SenseiViewModel;
-import com.adhocsensei.ahsedgeservice.viewmodel.StudentViewModel;
 import com.netflix.discovery.provider.Serializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -17,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @Service
 @RefreshScope
@@ -35,11 +31,12 @@ public class AdHocSenseiService {
     }
 
     public User createUser(@RequestBody User user) {
-//        System.out.println("service layer creating a user");
         if (user.isInstructor()) {
             user.setAuthority("SENSEI");
         } else user.setAuthority("STUDENT");
-        return userClient.createUser(user);
+        User createdUser = userClient.createUser(user);
+//        userClient.createAuthority(createdUser);
+        return createdUser;
     }
 
     public Optional<User> getUserById(@PathVariable Long id) {
@@ -50,7 +47,6 @@ public class AdHocSenseiService {
     public void updateUser(@PathVariable Long id, @RequestBody User user) {
         System.out.println("service layer updating a user by id");
         Optional<User> userOptional = userClient.getUserById(id);
-//                userRepo.findById(id);
         if (userOptional.isPresent()) {
             user.setUserId(id);
             userClient.updateUser(id, user);
