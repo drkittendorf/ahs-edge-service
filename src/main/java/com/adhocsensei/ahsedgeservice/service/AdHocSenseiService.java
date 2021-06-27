@@ -2,10 +2,8 @@ package com.adhocsensei.ahsedgeservice.service;
 
 import com.adhocsensei.ahsedgeservice.dto.Course;
 import com.adhocsensei.ahsedgeservice.dto.User;
-import com.adhocsensei.ahsedgeservice.exception.InvalidUserCredentialsException;
 import com.adhocsensei.ahsedgeservice.util.feign.CourseClient;
 import com.adhocsensei.ahsedgeservice.util.feign.UserClient;
-import com.netflix.discovery.provider.Serializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RefreshScope
@@ -35,26 +32,32 @@ public class AdHocSenseiService {
             user.setAuthority("SENSEI");
         } else user.setAuthority("STUDENT");
         User createdUser = userClient.createUser(user);
-//        userClient.createAuthority(createdUser);
+
         return createdUser;
     }
 
-    public Optional<User> getUserById(@PathVariable Long id) {
+    public User getUserById(@PathVariable Long id) {
         System.out.println("service layer getting a user by id");
         return userClient.getUserById(id);
     }
 
     public void updateUser(@PathVariable Long id, @RequestBody User user) {
         System.out.println("service layer updating a user by id");
-        Optional<User> userOptional = userClient.getUserById(id);
-        if (userOptional.isPresent()) {
-            user.setUserId(id);
+        User userOptional = userClient.getUserById(id);
+        if (userOptional != null) {
+            user.setId(id);
             userClient.updateUser(id, user);
         }
     }
 
     public void deleteUserById(@PathVariable Long id) {
         System.out.println("service later deleting user by id");
+        User userToDelete = userClient.getUserById(id);
+        System.out.println(userToDelete);
+
+        userToDelete.setStudentsRegisteredCourses(null);
+        System.out.println("after setting to null, user is now " +userToDelete);
+
         userClient.deleteUserById(id);
     }
 
@@ -84,10 +87,11 @@ public class AdHocSenseiService {
                                       @RequestParam(required = false) String location,
                                       @RequestParam(required = false) String date) {
         System.out.println("service layer, getting all courses");
+        System.out.println("getting all courses" + courseClient.getAllCourses(title, category, location, date));
         return courseClient.getAllCourses(title, category, location, date);
     }
 
-    public Optional<Course> getCourseById(@PathVariable Long id) {
+    public Course getCourseById(@PathVariable Long id) {
         System.out.println("service layer, getting course by id");
         return courseClient.getCourseById(id);
     }
@@ -103,35 +107,26 @@ public class AdHocSenseiService {
     }
 
     public User addARegisteredCourse(@PathVariable Long id, @RequestBody Course courseToBeRegistered) {
-        System.out.println("service layer, trying to register for a course");
-        User student = userClient.getUserById(id).get();
-        Optional<Course> registeredCourse = courseClient.getCourseById(courseToBeRegistered.getCourseId());
+            System.out.println("service layer, trying to register for a course");
+        User student = userClient.getUserById(id);
+            System.out.println(student);
+        Course registeredCourse = courseClient.getCourseById(courseToBeRegistered.getId());
+            System.out.println(registeredCourse);
 
-        userClient.addCourseToListOfStudentCourses(student.getUserId(), registeredCourse);
+        userClient.addCourseToListOfStudentCourses(id, registeredCourse);
 
         return student;
     }
 
     public Course buildACourse(@PathVariable Long id, @RequestBody Course courseToBeAdded) {
-        User sensei = userClient.getUserById(id).get();
-        courseToBeAdded.setSenseiId(sensei.getUserId());
-        Course addedCourse = courseClient.createCourse(courseToBeAdded);
-        userClient.addCourseToListOfSenseisCourses(sensei.getUserId(), addedCourse);
+        System.out.println("service making a course");
+        User sensei = userClient.getUserById(id);
 
-//        if (courseToBeAdded.getSenseiId() != null) {
-//            List<User> senseis = userClient.getAllUsers();
-//            List<User> thisSensei = senseis
-//                    .stream()
-//                    .filter(s -> courseToBeAdded.getSenseiId() == s.getUserId())
-//                    .collect(Collectors.toList());
-//            if (thisSensei.size() == 0 ) {
-//                System.out.println("passed invalid user id " + courseToBeAdded.getSenseiId());
-////                throw exception for invalid sensei
-//            }
-////            userClient.addCourseToListOfSenseisCourses(sensei.addCourseToSensei(courseToBeAdded));
-////            sensei.setSenseisCreatedCourses(courseToBeAdded);
-//            userClient.addCourseToListOfSenseisCourses(sensei.getUserId(),courseToBeAdded);
-//        }
+        Course addedCourse = courseClient.createCourse(id, courseToBeAdded);
+        addedCourse.setUser(sensei);
+        Course desired = courseClient.getCourseById(addedCourse.getId());
+
+
         return addedCourse;
     }
 }

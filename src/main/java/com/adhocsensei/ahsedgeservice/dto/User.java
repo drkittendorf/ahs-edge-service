@@ -9,7 +9,7 @@ import java.util.Set;
 @RefreshScope
 public class User implements Serializable {
 
-    private Long userId;
+    private Long id;
     private String authority;
     private String firstName;
     private String lastName;
@@ -19,14 +19,14 @@ public class User implements Serializable {
     private String bio;
     private boolean instructor;
 
-    private Set<Course> senseisCreatedCourses;
+//    private Set<Course> senseisCreatedCourses;
     private Set<Course> studentsRegisteredCourses;
 
     public User() {
     }
 
-    public User(Long userId, String authority, String firstName, String lastName, String email, String password, String bio, boolean instructor, Set<Course> senseisCreatedCourses, Set<Course> studentsRegisteredCourses) {
-        this.userId = userId;
+    public User(Long id, String authority, String firstName, String lastName, String email, String password, String bio, boolean instructor, Set<Course> studentsRegisteredCourses) {
+        this.id = id;
         this.authority = authority;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -34,16 +34,15 @@ public class User implements Serializable {
         this.password = password;
         this.bio = bio;
         this.instructor = instructor;
-        this.senseisCreatedCourses = senseisCreatedCourses;
         this.studentsRegisteredCourses = studentsRegisteredCourses;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getId() {
+        return id;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getAuthority() {
@@ -102,14 +101,6 @@ public class User implements Serializable {
         this.instructor = instructor;
     }
 
-    public Set<Course> getSenseisCreatedCourses() {
-        return senseisCreatedCourses;
-    }
-
-    public void setSenseisCreatedCourses(Set<Course> senseisCreatedCourses) {
-        this.senseisCreatedCourses = senseisCreatedCourses;
-    }
-
     public Set<Course> getStudentsRegisteredCourses() {
         return studentsRegisteredCourses;
     }
@@ -123,18 +114,18 @@ public class User implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return isInstructor() == user.isInstructor() && Objects.equals(getUserId(), user.getUserId()) && Objects.equals(getAuthority(), user.getAuthority()) && Objects.equals(getFirstName(), user.getFirstName()) && Objects.equals(getLastName(), user.getLastName()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getBio(), user.getBio()) && Objects.equals(getSenseisCreatedCourses(), user.getSenseisCreatedCourses()) && Objects.equals(getStudentsRegisteredCourses(), user.getStudentsRegisteredCourses());
+        return isInstructor() == user.isInstructor() && Objects.equals(getId(), user.getId()) && Objects.equals(getAuthority(), user.getAuthority()) && Objects.equals(getFirstName(), user.getFirstName()) && Objects.equals(getLastName(), user.getLastName()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getBio(), user.getBio()) && Objects.equals(getStudentsRegisteredCourses(), user.getStudentsRegisteredCourses());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUserId(), getAuthority(), getFirstName(), getLastName(), getEmail(), getPassword(), getBio(), isInstructor(), getSenseisCreatedCourses(), getStudentsRegisteredCourses());
+        return Objects.hash(getId(), getAuthority(), getFirstName(), getLastName(), getEmail(), getPassword(), getBio(), isInstructor(), getStudentsRegisteredCourses());
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "userId=" + userId +
+                "id=" + id +
                 ", authority='" + authority + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
@@ -142,7 +133,6 @@ public class User implements Serializable {
                 ", password='" + password + '\'' +
                 ", bio='" + bio + '\'' +
                 ", instructor=" + instructor +
-                ", senseisCreatedCourses=" + senseisCreatedCourses +
                 ", studentsRegisteredCourses=" + studentsRegisteredCourses +
                 '}';
     }

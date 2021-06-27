@@ -18,10 +18,10 @@ public interface CourseClient {
                                       @RequestParam(required = false) String date);
 
     @GetMapping("/course/{id}")
-    public Optional<Course> getCourseById(@PathVariable Long id);
+    public Course getCourseById(@PathVariable Long id);
 
-    @PostMapping("/course")
-    public Course createCourse(@RequestBody Course course);
+    @PostMapping("/senseidash/{id}/course")
+    public Course createCourse(@PathVariable Long id, @RequestBody Course course);
 
     @PutMapping("/course/{id}")
     public void updateCourse(@PathVariable Long id, @RequestBody Course course);
