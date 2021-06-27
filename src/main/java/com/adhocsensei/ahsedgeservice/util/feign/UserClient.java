@@ -16,7 +16,7 @@ public interface UserClient {
     public List<User> getAllUsers();
 
     @GetMapping("/user/{id}")
-    public Optional<User> getUserById(@PathVariable Long id);
+    public User getUserById(@PathVariable Long id);
 
     @GetMapping("/user/email")
     public User getUserByEmail(@RequestBody User user);
@@ -24,11 +24,11 @@ public interface UserClient {
     @PostMapping("/user")
     public User createUser(@RequestBody User user);
 
-    @PostMapping("/senseidash/{id}")
-    public User addCourseToListOfSenseisCourses(@PathVariable Long id, @RequestBody Course senseiCourse);
+//    @PostMapping("/senseidash/{id}")
+//    public void addCourseToListOfSenseisCourses(@PathVariable Long id, @RequestBody Course senseiCourse);
 
     @PostMapping("/studentdash/{id}")
-    public User addCourseToListOfStudentCourses(@PathVariable Long id, @RequestBody Optional<Course> studentCourse);
+    public void addCourseToListOfStudentCourses(@PathVariable Long id, @RequestBody Course studentCourse);
 
     @PutMapping("/user/{id}")
     public void updateUser(@PathVariable Long id, @RequestBody User user);

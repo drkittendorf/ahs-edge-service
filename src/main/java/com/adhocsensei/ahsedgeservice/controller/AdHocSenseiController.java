@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class AdHocSenseiController {
@@ -22,7 +21,7 @@ public class AdHocSenseiController {
     }
 
     @GetMapping("/user/{id}")
-    public Optional<User> getUserById(@PathVariable Long id) {
+    public User getUserById(@PathVariable Long id) {
         System.out.println("calling the edge service, getting user by id");
         return service.getUserById(id);
     }
@@ -52,7 +51,7 @@ public class AdHocSenseiController {
     }
 
 //    this should be used for sensei to add course, maybe route should be "create_course"
-    @PostMapping("/senseidash/{id}")
+    @PostMapping("/senseidash/{id}/course")
     public Course addACourse(@PathVariable Long id, @RequestBody Course course) {
         System.out.println("calling in edge for a sensei to make a course");
         return service.buildACourse(id, course);
@@ -74,7 +73,7 @@ public class AdHocSenseiController {
     }
 
     @GetMapping("/course/{id}")
-    public Optional<Course> getCourseById(@PathVariable Long id) {
+    public Course getCourseById(@PathVariable Long id) {
         System.out.println("calling the edge service, getting course by id");
         return service.getCourseById(id);
     }
