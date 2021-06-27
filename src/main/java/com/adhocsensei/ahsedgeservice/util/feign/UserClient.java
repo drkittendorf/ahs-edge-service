@@ -36,6 +36,6 @@ public interface UserClient {
     @DeleteMapping("/user/{id}")
     public void deleteUserById(@PathVariable Long id);
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public User loginUser(@RequestBody User user);
 }
