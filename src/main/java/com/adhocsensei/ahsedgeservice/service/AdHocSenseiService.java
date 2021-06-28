@@ -85,10 +85,9 @@ public class AdHocSenseiService {
     public List<Course> getAllCourses(@RequestParam(required = false) String title,
                                       @RequestParam(required = false) String category,
                                       @RequestParam(required = false) String location,
-                                      @RequestParam(required = false) String date) {
-        System.out.println("service layer, getting all courses");
-        System.out.println("getting all courses" + courseClient.getAllCourses(title, category, location, date));
-        return courseClient.getAllCourses(title, category, location, date);
+                                      @RequestParam(required = false) String date,
+                                      @RequestParam(required = false) Long senseiId) {
+        return courseClient.getAllCourses(title, category, location, date,senseiId);
     }
 
     public Course getCourseById(@PathVariable Long id) {
