@@ -15,7 +15,8 @@ public interface CourseClient {
     public List<Course> getAllCourses(@RequestParam(required = false) String title,
                                       @RequestParam(required = false) String category,
                                       @RequestParam(required = false) String location,
-                                      @RequestParam(required = false) String date);
+                                      @RequestParam(required = false) String date,
+                                      @RequestParam(required = false) Long senseiId);
 
     @GetMapping("/course/{id}")
     public Course getCourseById(@PathVariable Long id);

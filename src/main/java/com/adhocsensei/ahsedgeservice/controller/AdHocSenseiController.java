@@ -67,9 +67,10 @@ public class AdHocSenseiController {
     public List<Course> getAllCourses(@RequestParam(required = false) String title,
                                          @RequestParam(required = false) String category,
                                          @RequestParam(required = false) String location,
-                                         @RequestParam(required = false) String date) {
+                                         @RequestParam(required = false) String date,
+                                         @RequestParam(required = false) Long senseiId) {
         System.out.println("calling in edge service, getting all courses");
-        return service.getAllCourses(title,category,location,date);
+        return service.getAllCourses(title,category,location,date,senseiId);
     }
 
     @GetMapping("/course/{id}")
