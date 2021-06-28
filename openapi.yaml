@@ -1,0 +1,471 @@
+openapi: 3.0.3
+info:
+  title: Api Documentation
+  description: Api Documentation
+  termsOfService: 'urn:tos'
+  contact: {}
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0'
+  version: '1.0'
+servers:
+  - url: 'http://localhost:8142'
+    description: Inferred Url
+tags:
+  - name: ad-hoc-sensei-controller
+    description: Ad Hoc Sensei Controller
+paths:
+  /course:
+    get:
+      tags:
+        - ad-hoc-sensei-controller
+      summary: getAllCourses
+      operationId: getAllCoursesUsingGET
+      parameters:
+        - name: title
+          in: query
+          description: title
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: category
+          in: query
+          description: category
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: location
+          in: query
+          description: location
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: date
+          in: query
+          description: date
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: senseiId
+          in: query
+          description: senseiId
+          required: false
+          style: form
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/course/{id}':
+    get:
+      tags:
+        - ad-hoc-sensei-controller
+      summary: getCourseById
+      operationId: getCourseByIdUsingGET
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Course'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    put:
+      tags:
+        - ad-hoc-sensei-controller
+      summary: updateCourse
+      operationId: updateCourseUsingPUT
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Course'
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - ad-hoc-sensei-controller
+      summary: deleteCourseById
+      operationId: deleteCourseByIdUsingDELETE
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+  /login:
+    post:
+      tags:
+        - ad-hoc-sensei-controller
+      summary: loginUser
+      operationId: loginUserUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/User'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /register:
+    post:
+      tags:
+        - ad-hoc-sensei-controller
+      summary: addAUser
+      operationId: addAUserUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/User'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/senseidash/{id}/course':
+    post:
+      tags:
+        - ad-hoc-sensei-controller
+      summary: addACourse
+      operationId: addACourseUsingPOST
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Course'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Course'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/studentdash/{id}':
+    post:
+      tags:
+        - ad-hoc-sensei-controller
+      summary: registerForACourse
+      operationId: registerForACourseUsingPOST
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Course'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/User'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - ad-hoc-sensei-controller
+      summary: unregisterForACourse
+      operationId: unregisterForACourseUsingDELETE
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Course'
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+  /user:
+    get:
+      tags:
+        - ad-hoc-sensei-controller
+      summary: getAllUsers
+      operationId: getAllUsersUsingGET
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/user/{id}':
+    get:
+      tags:
+        - ad-hoc-sensei-controller
+      summary: getUserById
+      operationId: getUserByIdUsingGET
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    put:
+      tags:
+        - ad-hoc-sensei-controller
+      summary: updateUser
+      operationId: updateUserUsingPUT
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - ad-hoc-sensei-controller
+      summary: deleteUserById
+      operationId: deleteUserByIdUsingDELETE
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+components:
+  schemas:
+    Course:
+      title: Course
+      type: object
+      properties:
+        capacity:
+          type: integer
+          format: int32
+        category:
+          type: string
+        date:
+          type: string
+        duration:
+          type: integer
+          format: int32
+        id:
+          type: integer
+          format: int64
+        location:
+          type: string
+        longDescription:
+          type: string
+        senseiId:
+          type: integer
+          format: int64
+        shortDescription:
+          type: string
+        title:
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+    User:
+      title: User
+      type: object
+      properties:
+        authority:
+          type: string
+        authorityId:
+          type: integer
+          format: int64
+        bio:
+          type: string
+        email:
+          type: string
+        enabled:
+          type: boolean
+        firstName:
+          type: string
+        id:
+          type: integer
+          format: int64
+        instructor:
+          type: boolean
+        lastName:
+          type: string
+        password:
+          type: string
+        studentsRegisteredCourses:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/Course'
